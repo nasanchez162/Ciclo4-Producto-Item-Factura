@@ -1,0 +1,60 @@
+<script type="text/template" id="facturaList">
+    <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <table class="table striped">
+    <thead>
+    <tr>
+		 <th>fecha</th>
+		 <th>costoTotal</th>
+		 <th>itemId</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(facturas, function(factura) { %>
+    <tr>
+		<td><%= htmlEncode(factura.getDisplay('fecha')) %></td>
+		<td><%= htmlEncode(factura.getDisplay('costoTotal')) %></td>
+		<td><%= htmlEncode(factura.getDisplay('itemId')) %></td>
+    <td>
+    <% if(showEdit) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-factura-edit',{id:<%= factura.id %>}); return false" >Edit</a> |
+	<% } %> 
+	<% if(showDelete) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-factura-delete',{id:<%= factura.id %>}); return false" >Delete</a> 
+	<% } %>    
+	</td>
+    </tr>
+    <% }); %>
+    </tbody>
+    </table>
+    </div>
+</script>
+
+<script type="text/template" id="factura">
+    <div class="form-group">
+    <form role="form" id="<%= componentId %>-facturaForm">
+    <% if(factura.id) {%>
+    <input type="hidden" name="id" value="<%= factura.id %>"/>
+    <% }%>
+		<div class="form-group" >
+		<label for="fecha">fecha</label>
+    	<input type="text" class="form-control" id="fecha" name="fecha" placeholder="Enter value" value="<%= factura.get('fecha') %>"/>	
+		</div>
+		<div class="form-group" >
+		<label for="costoTotal">costoTotal</label>
+    	<input type="text" class="form-control" id="costoTotal" name="costoTotal" placeholder="Enter value" value="<%= factura.get('costoTotal') %>"/>	
+		</div>
+		<div class="form-group" >
+ 
+			<label for="itemidId">itemId</label> 
+            <select class="form-control" id="itemId" name="itemId">
+			  <option value="">None</option>
+            <% item.each(function(itemid) { %> 
+              <option value="<%=itemid.get('id')%>" <% if(factura.get('itemId')==itemid.get('id')) {%>selected<%}%> ><%=itemid.get('name')%></option>
+            <% }); %>                
+            </select>  
+		</div>
+    </form>
+    </div>
+</script> 
